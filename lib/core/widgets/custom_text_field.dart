@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-
 import '../constants/colors.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
     required this.text,
-    this.onChanged, // Add onChanged callback
+    this.onChanged,
   });
 
   final String text;
-  final ValueChanged<String>? onChanged; // Define the callback type
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class CustomTextField extends StatelessWidget {
     );
 
     return TextField(
-      onChanged: onChanged, // Pass the callback to the underlying TextField
+      onChanged: onChanged,
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.search, size: 25, color: AppColors.grey),
         border: outlineInputBorder,

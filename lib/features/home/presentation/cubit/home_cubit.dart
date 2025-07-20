@@ -12,7 +12,6 @@ class HomeCubit extends Cubit<HomeState> {
 
   HomeCubit(this._apiService) : super(HomeInitial());
 
-  // Emits a new state with the updated brand index and resets the search query.
   void selectBrand(int index) {
     if (state is HomeLoaded) {
       final currentState = state as HomeLoaded;
@@ -20,7 +19,6 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  // Emits a new state with the updated search query.
   void searchProducts(String query) {
     if (state is HomeLoaded) {
       final currentState = state as HomeLoaded;
@@ -28,7 +26,6 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  // Fetches the initial list of products from the API.
   Future<void> fetchProducts() async {
     emit(HomeLoading());
     try {

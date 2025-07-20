@@ -64,7 +64,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ],
       )
-          : Center( // This Center widget is correctly used for centering the title
+          : Center(
         child: CustomText(
           text: titleText,
           fontSize: 20,
@@ -72,10 +72,9 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
           fontWeight: FontWeight.w600,
         ),
       ),
-      centerTitle: true, // <-- Add this line here to explicitly center the title
+      centerTitle: true,
       actions: [
-        // Conditional rendering for the right icon and its circle container
-        if (rightIcon != null) // Only show if rightIcon is provided
+        if (rightIcon != null)
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: Container(

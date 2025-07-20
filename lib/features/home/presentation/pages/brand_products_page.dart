@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../../core/routes/route_names.dart';
 import '../../../../core/widgets/custom_appbar.dart';
 import '../../../../core/widgets/custom_card.dart';

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:final_project/main.dart'; // To access sharedPreferences
+import 'package:final_project/main.dart';
 
 part 'onboarding_state.dart';
 
@@ -12,8 +12,6 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   }
 
   Future<void> completeOnboarding() async {
-    // This logic doesn't really produce a "state" for the UI,
-    // but it's good practice to keep side-effects like this in the business logic layer.
     await sharedPreferences.setBool('hasSeenOnboarding', true);
   }
 }

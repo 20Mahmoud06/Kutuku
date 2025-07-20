@@ -36,7 +36,6 @@ class MyApp extends StatelessWidget {
         BlocProvider<OnboardingCubit>(
           create: (context) => OnboardingCubit(),
         ),
-        // Provides HomeCubit and immediately calls fetchProducts
         BlocProvider<HomeCubit>(
           create: (context) => HomeCubit(ApiService())..fetchProducts(),
         ),

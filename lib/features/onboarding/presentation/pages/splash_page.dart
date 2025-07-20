@@ -19,30 +19,22 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _decideNextScreen() async {
-    // Wait for a few seconds on the splash screen.
     await Future.delayed(const Duration(seconds: 3));
 
-    // Ensure the widget is still in the tree before navigating.
     if (!mounted) return;
 
-    // Check if the user has seen the onboarding screens before.
     final bool hasSeenOnboarding =
         sharedPreferences.getBool('hasSeenOnboarding') ?? false;
 
-    // Check if there is a currently signed-in user.
     final User? currentUser = FirebaseAuth.instance.currentUser;
 
     if (hasSeenOnboarding) {
-      // If onboarding has been seen, check auth status.
       if (currentUser != null) {
-        // If user is logged in, go to the home page.
         Navigator.pushReplacementNamed(context, RouteNames.home);
       } else {
-        // If user is not logged in, go to the login page.
         Navigator.pushReplacementNamed(context, RouteNames.login);
       }
     } else {
-      // If onboarding has not been seen, go to the onboarding screen.
       Navigator.pushReplacementNamed(context, RouteNames.onboarding);
     }
   }
@@ -67,9 +59,7 @@ class _SplashPageState extends State<SplashPage> {
               color: Colors.white,
             ),
             const SizedBox(height: 50),
-            const CircularProgressIndicator(
-              color: Colors.white,
-            ),
+            const CircularProgressIndicator(color: Colors.white),
           ],
         ),
       ),

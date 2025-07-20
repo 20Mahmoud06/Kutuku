@@ -31,7 +31,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> galleryImages = [selectedProduct.image, selectedProduct.image, selectedProduct.image]; // Example gallery
+    List<String> galleryImages = [
+      selectedProduct.image,
+      selectedProduct.image,
+      selectedProduct.image,
+    ]; // Example gallery
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppbar(
@@ -62,9 +66,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       children: [
         _buildProductImage(),
         const SizedBox(height: 20),
-        Expanded(
-          child: _buildProductInfo(galleryImages),
-        ),
+        Expanded(child: _buildProductInfo(galleryImages)),
       ],
     );
   }
@@ -82,10 +84,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             ),
           ),
         ),
-        Expanded(
-          flex: 1,
-          child: _buildProductInfo(galleryImages),
-        ),
+        Expanded(flex: 1, child: _buildProductInfo(galleryImages)),
       ],
     );
   }
@@ -119,8 +118,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {
                   return const Center(
-                    child: Text('Image Not Found',
-                        style: TextStyle(color: AppColors.grey)),
+                    child: Text(
+                      'Image Not Found',
+                      style: TextStyle(color: AppColors.grey),
+                    ),
                   );
                 },
               ),
@@ -152,10 +153,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       ),
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20.0,
-            vertical: 20,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -212,7 +210,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     );
                   },
                   separatorBuilder: (context, index) =>
-                  const SizedBox(width: 15),
+                      const SizedBox(width: 15),
                 ),
               ),
               const SizedBox(height: 20),
@@ -282,8 +280,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       ),
                       const SizedBox(height: 5),
                       CustomText(
-                        text:
-                        '\$${selectedProduct.price.toString()}',
+                        text: '\$${selectedProduct.price.toString()}',
                         fontSize: 20,
                         color: AppColors.black,
                         fontWeight: FontWeight.bold,
@@ -293,9 +290,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   const SizedBox(width: 120),
                   Expanded(
                     child: CustomButton(
-                      onPressed: () {
-                        print('Add to cart pressed!');
-                      },
                       child: const CustomText(
                         text: 'Add To Cart',
                         fontSize: 18,

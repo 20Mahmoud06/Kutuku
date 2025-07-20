@@ -32,7 +32,6 @@ class OnboardingPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Spacer(flex: 3),
-
           SizedBox(
             height: screenHeight * 0.4,
             child: Stack(

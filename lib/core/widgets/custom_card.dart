@@ -18,7 +18,6 @@ class CustomCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        // 1. Reduced width for a more compact card
         width: 160,
         decoration: BoxDecoration(
           color: AppColors.white,
@@ -31,7 +30,6 @@ class CustomCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 2. Used Expanded to let the image take available space, helping create a square look
                   Expanded(
                     child: Center(
                       child: Image.network(
@@ -45,7 +43,6 @@ class CustomCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  // 3. Adjusted text and spacing for the smaller size
                   const CustomText(
                     text: 'Best Seller',
                     fontSize: 12,
@@ -70,7 +67,6 @@ class CustomCard extends StatelessWidget {
                 ],
               ),
             ),
-            // 4. Redesigned the "Add" button to be smaller and match the new card style
             Positioned(
               bottom: 0,
               right: 0,

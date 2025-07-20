@@ -9,7 +9,7 @@ class ProductModel {
   final String brand;
   final String image;
   final double price;
-  final String description; // Make it nullable
+  final String description;
 
   ProductModel({
     required this.id,
@@ -27,7 +27,7 @@ class ProductModel {
       brand: json['brand'],
       image: json['image'],
       price: double.tryParse(json['price'].toString()) ?? 0.0,
-      description: json['description'], // Handle null or ensure it's a string
+      description: json['description'],
     );
   }
 
@@ -38,7 +38,7 @@ class ProductModel {
       brand: '',
       image: '',
       price: 0.0,
-      description: '', // Set to null for empty
+      description: '',
     );
   }
 }

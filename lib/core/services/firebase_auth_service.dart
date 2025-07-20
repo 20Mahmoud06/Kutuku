@@ -12,8 +12,6 @@ class FirebaseAuthService {
 
   // Email/Password Sign Up
   Future<User?> signUpWithEmailAndPassword(String email, String password) async {
-    // The try-catch block is moved to the UI layer to handle specific exceptions
-    // and show appropriate messages to the user.
     UserCredential credential = await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
@@ -34,7 +32,6 @@ class FirebaseAuthService {
   Future<User?> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     if (googleUser == null) {
-      // The user canceled the sign-in
       return null;
     }
 

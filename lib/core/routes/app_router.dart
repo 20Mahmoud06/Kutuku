@@ -35,7 +35,7 @@ class AppRouter {
           builder: (_) => BrandProductsPage(brand: brand, products: products),
         );
 
-      case RouteNames.randomProducts: // This case was incorrectly placed
+      case RouteNames.randomProducts:
         final randomProductsArgs = settings.arguments as List<ProductModel>;
         return MaterialPageRoute(builder: (_) => RandomProductsPage(products: randomProductsArgs));
 

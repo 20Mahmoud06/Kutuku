@@ -1,7 +1,6 @@
 import 'package:final_project/core/widgets/custom_text.dart';
 import 'package:final_project/features/product_details/data/models/sizes_model.dart';
 import 'package:flutter/material.dart';
-
 import '../constants/colors.dart';
 
 class SizesContainer extends StatelessWidget {

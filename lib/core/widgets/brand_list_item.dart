@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../features/home/data/models/brand_model.dart';
 import '../constants/colors.dart';
 

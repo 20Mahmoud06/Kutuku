@@ -53,7 +53,6 @@ class _HomePageState extends State<HomePage> {
             }
             if (state is HomeLoaded) {
               final popularProducts = state.filteredProducts;
-              // Only take the first 4 products to display in the list.
               final displayedPopularProducts = popularProducts.sublist(0, min(4, popularProducts.length));
               final newArrivals = state.newArrivals;
               final randomProduct = newArrivals.isNotEmpty ? newArrivals.first : ProductModel.empty();
@@ -136,11 +135,9 @@ class _HomePageState extends State<HomePage> {
                             )
                           else
                             SizedBox(
-                              // Adjusted height for the new smaller card size
                               height: 220,
                               child: ListView.separated(
                                 scrollDirection: Axis.horizontal,
-                                // Use the limited list for the item count
                                 itemCount: displayedPopularProducts.length,
                                 separatorBuilder: (_, __) => const SizedBox(width: 12),
                                 itemBuilder: (context, index) {
