@@ -6,16 +6,6 @@ An elegant e-commerce mobile application for shoe enthusiasts. Browse and shop f
 
 ---
 
-## 📸 Screenshots
-
-*مهم جدًا تستبدل الصور دي بلقطات شاشة حقيقية من تطبيقك عشان تخلي شكل المشروع احترافي.*
-
-| Onboarding Screen | Home Page | Product Details |
-| :---: | :---: | :---: |
-| <img src="ضع_هنا_رابط_لصورة_من_التطبيق.png" width="200"> | <img src="ضع_هنا_رابط_لصورة_من_التطبيق.png" width="200"> | <img src="ضع_هنا_رابط_لصورة_من_التطبيق.png" width="200"> |
-
----
-
 ## ✨ Features
 
 Here are some of the key features of the Kutuku app:
@@ -38,7 +28,6 @@ This project is built using the latest technologies for modern mobile app develo
 - **[Dart](https://dart.dev/):** The programming language used.
 - **[Firebase](https://firebase.google.com/):** For backend services including:
   - **Firebase Authentication** for user management.
-  - **Cloud Firestore** (or Realtime Database) for storing product data.
 - **[Bloc / Cubit](https://bloclibrary.dev/):** For predictable and scalable state management.
 
 ---
