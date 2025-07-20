@@ -1,16 +1,59 @@
-# final_project
+# Kutuku 👟
 
-A new Flutter project.
+![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Flutter Version](https://img.shields.io/badge/Flutter-3.x-blue)
 
-## Getting Started
+An elegant e-commerce mobile application for shoe enthusiasts. Browse and shop for the latest shoes from your favorite brands like Adidas, Puma, Nike, and more, all in one place. The app features a clean and modern white and purple theme.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## 📸 Screenshots
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+*مهم جدًا تستبدل الصور دي بلقطات شاشة حقيقية من تطبيقك عشان تخلي شكل المشروع احترافي.*
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+| Onboarding Screen | Home Page | Product Details |
+| :---: | :---: | :---: |
+| <img src="ضع_هنا_رابط_لصورة_من_التطبيق.png" width="200"> | <img src="ضع_هنا_رابط_لصورة_من_التطبيق.png" width="200"> | <img src="ضع_هنا_رابط_لصورة_من_التطبيق.png" width="200"> |
+
+---
+
+## ✨ Features
+
+Here are some of the key features of the Kutuku app:
+
+- **User Authentication:** Secure sign-up and login using Firebase Authentication.
+- **Google Sign-In:** Quick access with Google accounts for a seamless experience.
+- **Product Browse:** A smooth and intuitive interface to explore various shoe models.
+- **Brand Filtering:** Easily find shoes from top brands.
+- **Product Details:** View comprehensive details for each shoe, including available sizes, description, and an image gallery.
+- **Modern UI/UX:** A clean and beautiful user interface with a distinctive white and purple color scheme.
+- **Onboarding Flow:** A simple and attractive introduction for new users.
+
+---
+
+## 🛠️ Built With
+
+This project is built using the latest technologies for modern mobile app development:
+
+- **[Flutter](https://flutter.dev/):** The primary framework for building the app for both iOS and Android from a single codebase.
+- **[Dart](https://dart.dev/):** The programming language used.
+- **[Firebase](https://firebase.google.com/):** For backend services including:
+  - **Firebase Authentication** for user management.
+  - **Cloud Firestore** (or Realtime Database) for storing product data.
+- **[Bloc / Cubit](https://bloclibrary.dev/):** For predictable and scalable state management.
+
+---
+
+## 🚀 Getting Started
+
+To get a local copy up and running, follow these simple steps.
+
+### Prerequisites
+
+Make sure you have the Flutter SDK installed on your machine.
+- [Flutter Installation Guide](https://flutter.dev/docs/get-started/install)
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone [https://github.com/20Mahmoud06/Kutuku.git](https://github.com/20Mahmoud06/Kutuku.git)
