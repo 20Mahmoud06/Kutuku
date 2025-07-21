@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '/core/constants/colors.dart';
 
 class CustomButton extends StatelessWidget {
   final Widget child;
@@ -13,14 +12,15 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return SizedBox(
       width: double.infinity,
       height: 50,
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          backgroundColor: AppColors.button,
-          disabledBackgroundColor: AppColors.button.withOpacity(0.7),
+          backgroundColor: theme.colorScheme.primary,
+          disabledBackgroundColor: theme.colorScheme.primary.withOpacity(0.7),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50.0),
           ),

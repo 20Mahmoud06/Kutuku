@@ -1,5 +1,3 @@
-import 'package:final_project/core/constants/colors.dart';
-import 'package:final_project/core/widgets/custom_appbar.dart';
 import 'package:final_project/core/widgets/custom_card.dart';
 import 'package:final_project/core/widgets/custom_text.dart';
 import 'package:final_project/core/widgets/custom_text_field.dart';
@@ -9,7 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:math';
 import '../../../../core/routes/route_names.dart';
 import '../../../../core/widgets/brand_list_item.dart';
+import '../../../../core/widgets/custom_appbar.dart';
 import '../../../../core/widgets/custom_navigation_bar.dart';
+import '../../../../core/widgets/custom_side_menu.dart';
+import '../../../favorites/presentation/pages/favorites_page.dart';
 import '../../data/models/brand_model.dart';
 import '../cubit/home_cubit.dart';
 
@@ -21,12 +22,28 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _navBarSelectedIndex = 0;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  int _navBarSelectedIndex = 1;
 
   void _onNavBarItemTapped(int index) {
-    setState(() {
-      _navBarSelectedIndex = index;
-    });
+    if (index == _navBarSelectedIndex) return;
+
+    switch (index) {
+      case 0:
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const FavoritesPage()),
+        );
+        break;
+      case 1:
+        setState(() {
+          _navBarSelectedIndex = index;
+        });
+        break;
+      case 2:
+        Navigator.pushNamed(context, RouteNames.accountPage);
+        break;
+    }
   }
 
   @override
@@ -36,13 +53,17 @@ class _HomePageState extends State<HomePage> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
+        key: _scaffoldKey,
+        drawer: const CustomSideMenu(),
         appBar: CustomAppbar(
-          rightIcon: Icons.shopping_bag_outlined,
+          rightIcon: const Icon(Icons.shopping_bag_outlined),
           leftIcon: Icons.apps,
           titleText: 'Mondolibug, Sylhet',
           showLocation: true,
+          onLeftIconPressed: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
         ),
-        backgroundColor: AppColors.backgroundAppbar,
         body: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
             if (state is HomeLoading || state is HomeInitial) {
@@ -53,21 +74,25 @@ class _HomePageState extends State<HomePage> {
             }
             if (state is HomeLoaded) {
               final popularProducts = state.filteredProducts;
-              final displayedPopularProducts = popularProducts.sublist(0, min(4, popularProducts.length));
+              final displayedPopularProducts =
+              popularProducts.sublist(0, min(4, popularProducts.length));
               final newArrivals = state.newArrivals;
-              final randomProduct = newArrivals.isNotEmpty ? newArrivals.first : ProductModel.empty();
+              final randomProduct =
+              newArrivals.isNotEmpty ? newArrivals.first : ProductModel.empty();
 
               return LayoutBuilder(
                 builder: (context, constraints) {
                   return SingleChildScrollView(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: constraints.maxWidth > 600 ? 32.0 : 16.0),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: constraints.maxWidth > 600 ? 32.0 : 16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 20),
                           CustomTextField(
-                            text: 'Looking for shoes',
+                            isSearchField: true,
+                            hintText: 'Looking for shoes',
                             onChanged: (query) {
                               context.read<HomeCubit>().searchProducts(query);
                             },
@@ -81,10 +106,13 @@ class _HomePageState extends State<HomePage> {
                                 itemCount: BrandModels.length,
                                 itemBuilder: (context, index) {
                                   final brandModel = BrandModels[index];
-                                  final isSelected = state.brandSelectedIndex == index;
+                                  final isSelected =
+                                      state.brandSelectedIndex == index;
                                   return GestureDetector(
                                     onTap: () {
-                                      context.read<HomeCubit>().selectBrand(index);
+                                      context
+                                          .read<HomeCubit>()
+                                          .selectBrand(index);
                                     },
                                     child: BrandListItem(
                                       brand: brandModel,
@@ -99,9 +127,10 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               CustomText(
-                                text: state.searchQuery.isEmpty ? 'Popular Shoes' : 'Search Results',
-                                fontSize: 18,
-                                color: AppColors.black,
+                                text: state.searchQuery.isEmpty
+                                    ? 'Popular Shoes'
+                                    : 'Search Results',
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                               if (state.searchQuery.isEmpty)
@@ -111,26 +140,27 @@ class _HomePageState extends State<HomePage> {
                                       context,
                                       RouteNames.brandProducts,
                                       arguments: {
-                                        'brand': BrandModels[state.brandSelectedIndex].name,
-                                        // Pass the *full* list of products to the "See all" page
+                                        'brand': BrandModels[
+                                        state.brandSelectedIndex]
+                                            .name,
                                         'products': popularProducts,
                                       },
                                     );
                                   },
-                                  child: const CustomText(
+                                  child: CustomText(
                                     text: 'See all',
-                                    fontSize: 16,
-                                    color: AppColors.lightBlue,
+                                    fontSize: 18,
+                                    color: Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 40),
                           if (popularProducts.isEmpty)
                             const Center(
                               child: Padding(
                                 padding: EdgeInsets.all(20.0),
-                                child: Text("No shoes found."),
+                                child: CustomText(text: "No shoes found."),
                               ),
                             )
                           else
@@ -139,9 +169,11 @@ class _HomePageState extends State<HomePage> {
                               child: ListView.separated(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: displayedPopularProducts.length,
-                                separatorBuilder: (_, __) => const SizedBox(width: 12),
+                                separatorBuilder: (_, __) =>
+                                const SizedBox(width: 12),
                                 itemBuilder: (context, index) {
-                                  final product = displayedPopularProducts[index];
+                                  final product =
+                                  displayedPopularProducts[index];
                                   return CustomCard(
                                     onTap: () {
                                       Navigator.pushNamed(
@@ -155,15 +187,14 @@ class _HomePageState extends State<HomePage> {
                                 },
                               ),
                             ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 40),
                           if (state.searchQuery.isEmpty) ...[
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const CustomText(
                                   text: 'New Arrivals',
-                                  fontSize: 18,
-                                  color: AppColors.black,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 GestureDetector(
@@ -174,19 +205,19 @@ class _HomePageState extends State<HomePage> {
                                       arguments: newArrivals,
                                     );
                                   },
-                                  child: const CustomText(
+                                  child: CustomText(
                                     text: 'See all',
-                                    fontSize: 16,
-                                    color: AppColors.lightBlue,
+                                    fontSize: 18,
+                                    color: Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 30),
                             if (randomProduct != ProductModel.empty())
                               _buildNewArrivalsCard(randomProduct, constraints),
                           ],
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 40),
                         ],
                       ),
                     ),
@@ -205,7 +236,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildNewArrivalsCard(ProductModel product, BoxConstraints constraints) {
+  Widget _buildNewArrivalsCard(
+      ProductModel product, BoxConstraints constraints) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
@@ -216,9 +249,9 @@ class _HomePageState extends State<HomePage> {
       },
       child: Container(
         width: double.infinity,
-        height: constraints.maxWidth > 600 ? 200 : 150,
+        height: constraints.maxWidth > 800 ? 200 : 150,
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
@@ -231,17 +264,16 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CustomText(
+                    CustomText(
                       text: 'Best Choice',
                       fontSize: 16,
-                      color: AppColors.lightBlue,
+                      color: theme.colorScheme.primary,
                       fontWeight: FontWeight.w600,
                     ),
                     const SizedBox(height: 5),
                     CustomText(
                       text: product.name,
                       fontSize: 20,
-                      color: AppColors.black,
                       fontWeight: FontWeight.bold,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -249,7 +281,6 @@ class _HomePageState extends State<HomePage> {
                     CustomText(
                       text: '\$${product.price}',
                       fontSize: 18,
-                      color: AppColors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ],
@@ -264,7 +295,8 @@ class _HomePageState extends State<HomePage> {
                   product.image,
                   fit: BoxFit.contain,
                   errorBuilder: (context, error, stackTrace) =>
-                  const Icon(Icons.image_not_supported, color: Colors.grey, size: 40),
+                  const Icon(Icons.image_not_supported,
+                      color: Colors.grey, size: 40),
                 ),
               ),
             ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../features/home/data/models/brand_model.dart';
-import '../constants/colors.dart';
 
 class BrandListItem extends StatelessWidget {
   const BrandListItem({
@@ -14,6 +13,9 @@ class BrandListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: AnimatedContainer(
@@ -21,14 +23,15 @@ class BrandListItem extends StatelessWidget {
         curve: Curves.easeInOut,
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryBlue : AppColors.white,
+          color: isSelected ? theme.colorScheme.primary : theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(50.0),
           boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 5,
-              offset: const Offset(0, 3),
-            ),
+            if (!isDarkMode)
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 5,
+                offset: const Offset(0, 3),
+              ),
           ],
         ),
         child: Row(
@@ -39,7 +42,7 @@ class BrandListItem extends StatelessWidget {
               width: 35,
               height: 35,
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.white : AppColors.backgroundAppbar,
+                color: isSelected ? Colors.white : theme.scaffoldBackgroundColor,
                 shape: BoxShape.circle,
               ),
               child: Padding(
@@ -60,8 +63,8 @@ class BrandListItem extends StatelessWidget {
                     const SizedBox(width: 8),
                     Text(
                       brand.name,
-                      style: const TextStyle(
-                        color: AppColors.white,
+                      style: TextStyle(
+                        color: theme.colorScheme.onPrimary,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),

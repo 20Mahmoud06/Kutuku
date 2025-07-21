@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:final_project/core/constants/colors.dart';
 import 'package:final_project/core/routes/route_names.dart';
 import 'package:final_project/core/widgets/custom_button.dart';
 import 'package:final_project/core/widgets/custom_text.dart';
@@ -52,12 +51,11 @@ class SignupPage extends StatelessWidget {
                         const CustomText(
                             text: 'Create Account',
                             fontSize: 30,
-                            color: AppColors.black,
                             fontWeight: FontWeight.bold),
                         const CustomText(
-                            text: 'Let’s Create Account Together',
-                            fontSize: 20,
-                            color: AppColors.grey),
+                          text: 'Let’s Create Account Together',
+                          fontSize: 20,
+                        ),
                         const SizedBox(height: 50),
                         CustomTextFormField(
                           controller: nameController,
@@ -101,33 +99,41 @@ class SignupPage extends StatelessWidget {
                                   : () {
                                 if (_keyForm.currentState!.validate()) {
                                   context.read<AuthCubit>().signUp(
-                                    email: emailController.text.trim(),
-                                    password: passwordController.text.trim(),
+                                    email:
+                                    emailController.text.trim(),
+                                    password:
+                                    passwordController.text.trim(),
                                   );
                                 }
                               },
                               child: isLoading
-                                  ? const CircularProgressIndicator(color: Colors.white)
-                                  : const CustomText(text: 'Sign Up', fontSize: 20, color: Colors.white),
+                                  ? const CircularProgressIndicator(
+                                  color: Colors.white)
+                                  : const CustomText(
+                                  text: 'Sign Up',
+                                  fontSize: 20,
+                                  color: Colors.white),
                             );
                           },
                         ),
                         const SizedBox(height: 20),
                         GoogleSigninButton(
-                          onPressed: () => context.read<AuthCubit>().signInWithGoogle(),
+                          onPressed: () =>
+                              context.read<AuthCubit>().signInWithGoogle(),
                           text: "Sign up with Google",
                         ),
                         const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const CustomText(text: 'Already have an account?', fontSize: 16, color: AppColors.grey),
+                            const CustomText(
+                                text: 'Already have an account?', fontSize: 16),
                             TextButton(
-                              onPressed: () => Navigator.pushNamed(context, RouteNames.login),
+                              onPressed: () =>
+                                  Navigator.pushNamed(context, RouteNames.login),
                               child: const CustomText(
                                   text: 'Log In',
                                   fontSize: 16,
-                                  color: AppColors.black,
                                   fontWeight: FontWeight.w500),
                             )
                           ],

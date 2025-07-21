@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '/core/constants/colors.dart';
-
 
 class CustomTextFormField extends StatefulWidget {
   const CustomTextFormField({
@@ -33,14 +31,20 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final hintColor = theme.textTheme.bodyMedium?.color;
+    final enabledBorderColor = Colors.grey.shade400;
+    final focusedBorderColor = theme.colorScheme.primary;
+    final errorColor = theme.colorScheme.error;
+
     final outlineInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(50.0),
-      borderSide: const BorderSide(color: AppColors.border, width: 1.5),
+      borderSide: BorderSide(color: enabledBorderColor, width: 1.5),
     );
 
     final focusedOutlineInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(50.0),
-      borderSide: BorderSide(color: AppColors.grey, width: 2.0),
+      borderSide: BorderSide(color: focusedBorderColor, width: 2.0),
     );
 
     return TextFormField(
@@ -53,22 +57,25 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         enabledBorder: outlineInputBorder,
         focusedBorder: focusedOutlineInputBorder,
         errorBorder: outlineInputBorder.copyWith(
-          borderSide: const BorderSide(color: Colors.red, width: 1.5),
+          borderSide: BorderSide(color: errorColor, width: 1.5),
         ),
         focusedErrorBorder: outlineInputBorder.copyWith(
-          borderSide: const BorderSide(color: Colors.red, width: 2.0),
+          borderSide: BorderSide(color: errorColor, width: 2.0),
         ),
         isDense: true,
         hintText: widget.text,
-        hintStyle: const TextStyle(color: AppColors.grey),
+        hintStyle: TextStyle(color: hintColor),
         filled: true,
-        fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+        fillColor: theme.colorScheme.surface,
+        contentPadding:
+        const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
         suffixIcon: widget.isPassword
             ? IconButton(
           icon: Icon(
-            _obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-            color: AppColors.lightBlack,
+            _obscureText
+                ? Icons.visibility_off_outlined
+                : Icons.visibility_outlined,
+            color: hintColor,
           ),
           onPressed: () {
             setState(() {
@@ -78,8 +85,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         )
             : null,
       ),
-      style: const TextStyle(color: AppColors.black, fontSize: 18),
-      cursorColor: AppColors. black,
+      style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 18),
+      cursorColor: theme.colorScheme.onSurface,
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:final_project/main.dart'; // To access the global sharedPreferences
+import 'package:final_project/main.dart';
 import 'package:final_project/core/routes/route_names.dart';
 import 'package:final_project/core/widgets/custom_text.dart';
 

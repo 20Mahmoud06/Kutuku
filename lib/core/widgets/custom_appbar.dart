@@ -1,48 +1,58 @@
-import 'package:final_project/core/constants/colors.dart';
 import 'package:final_project/core/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
-  CustomAppbar({
+  const CustomAppbar({
     super.key,
     this.rightIcon,
     required this.leftIcon,
     required this.titleText,
     this.showLocation = false,
     this.onLeftIconPressed,
+    this.onRightIconPressed,
   });
 
-  final IconData? rightIcon;
+  final Widget? rightIcon;
   final IconData leftIcon;
   final String titleText;
   final bool showLocation;
   final VoidCallback? onLeftIconPressed;
+  final VoidCallback? onRightIconPressed;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return AppBar(
-      elevation: 0,
-      backgroundColor: AppColors.backgroundAppbar,
       leading: Padding(
         padding: const EdgeInsets.only(left: 20.0),
         child: Container(
-          decoration: const BoxDecoration(
-            color: AppColors.white,
-            shape: BoxShape.circle,
-          ),
+          decoration: BoxDecoration(
+              color: theme.colorScheme.surface,
+              shape: BoxShape.circle,
+              boxShadow: [
+                if (!isDarkMode)
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  )
+              ]),
           child: IconButton(
-            icon: Icon(leftIcon, color: AppColors.black),
+            icon: Icon(leftIcon, color: theme.colorScheme.onSurface),
             onPressed: onLeftIconPressed,
           ),
         ),
       ),
       title: showLocation
           ? Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CustomText(
+          const CustomText(
             text: 'Store location',
             fontSize: 14,
-            color: AppColors.grey,
+            color: Colors.grey,
           ),
           const SizedBox(height: 4),
           Row(
@@ -50,14 +60,13 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               Icon(
                 Icons.location_pin,
-                color: AppColors.lightOrange,
+                color: theme.colorScheme.secondary,
                 size: 20,
               ),
               const SizedBox(width: 4),
               CustomText(
                 text: titleText,
                 fontSize: 16,
-                color: AppColors.black,
                 fontWeight: FontWeight.bold,
               ),
             ],
@@ -68,7 +77,6 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
         child: CustomText(
           text: titleText,
           fontSize: 20,
-          color: AppColors.black,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -78,13 +86,20 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: Container(
-              decoration: const BoxDecoration(
-                color: AppColors.white,
-                shape: BoxShape.circle,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(rightIcon, color: AppColors.black),
+              decoration: BoxDecoration(
+                  color: theme.colorScheme.surface,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    if (!isDarkMode)
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      )
+                  ]),
+              child: IconButton(
+                onPressed: onRightIconPressed,
+                icon: rightIcon!,
               ),
             ),
           ),

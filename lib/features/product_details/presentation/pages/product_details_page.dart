@@ -5,7 +5,6 @@ import 'package:final_project/core/widgets/gallery_container.dart';
 import 'package:final_project/core/widgets/sizes_container.dart';
 import 'package:final_project/features/product_details/data/models/sizes_model.dart';
 import 'package:flutter/material.dart';
-import '../../../../core/constants/colors.dart';
 import '../../data/models/product_model.dart';
 
 class ProductDetailsPage extends StatefulWidget {
@@ -35,18 +34,17 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       selectedProduct.image,
       selectedProduct.image,
       selectedProduct.image,
-    ]; // Example gallery
+    ];
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppbar(
-          rightIcon: Icons.shopping_bag_outlined,
+          rightIcon: const Icon(Icons.shopping_bag_outlined),
           leftIcon: Icons.arrow_back_ios_new,
           titleText: 'Men’s Shoes',
           onLeftIconPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        backgroundColor: AppColors.backgroundAppbar,
         body: LayoutBuilder(
           builder: (context, constraints) {
             bool isWide = constraints.maxWidth > 600;
@@ -90,9 +88,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   }
 
   Widget _buildProductImage() {
+    final theme = Theme.of(context);
     return Container(
       height: 300,
-      color: AppColors.backgroundAppbar,
+      color: theme.scaffoldBackgroundColor,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -100,15 +99,16 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             width: 250,
             height: 250,
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: const Offset(0, 3),
-                ),
+                if (theme.brightness == Brightness.light)
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
               ],
             ),
             child: ClipRRect(
@@ -118,10 +118,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {
                   return const Center(
-                    child: Text(
-                      'Image Not Found',
-                      style: TextStyle(color: AppColors.grey),
-                    ),
+                    child: CustomText(text: 'Image Not Found'),
                   );
                 },
               ),
@@ -132,6 +129,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             child: Image.asset(
               'assets/icons/circle.png',
               width: 250,
+              color: theme.brightness == Brightness.dark
+                  ? Colors.white.withOpacity(0.1)
+                  : null,
               errorBuilder: (context, error, stackTrace) {
                 return const SizedBox.shrink();
               },
@@ -143,10 +143,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   }
 
   Widget _buildProductInfo(List<String> galleryImages) {
+    final theme = Theme.of(context);
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
         ),
@@ -157,41 +158,37 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CustomText(
+              CustomText(
                 text: 'Best Seller',
                 fontSize: 16,
-                color: AppColors.lightBlue,
+                color: theme.colorScheme.primary,
               ),
               const SizedBox(height: 8),
               CustomText(
                 text: selectedProduct.name,
                 fontSize: 24,
-                color: AppColors.black,
                 fontWeight: FontWeight.bold,
               ),
               const SizedBox(height: 10),
               CustomText(
-                text: '\$${selectedProduct.price.toString()}',
+                text: '\$${selectedProduct.price}',
                 fontSize: 20,
-                color: AppColors.black,
                 fontWeight: FontWeight.bold,
               ),
               const SizedBox(height: 15),
               CustomText(
                 text: selectedProduct.description,
                 fontSize: 16,
-                color: AppColors.grey,
               ),
               const SizedBox(height: 20),
               const CustomText(
                 text: 'Gallery',
                 fontSize: 20,
-                color: AppColors.black,
                 fontWeight: FontWeight.bold,
               ),
               const SizedBox(height: 15),
               SizedBox(
-                height: 60,
+                height: 80,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: galleryImages.length,
@@ -205,12 +202,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         setState(() {
                           _selectedGalleryIndex = index;
                         });
-                      },
-                      productModel: null,
+                      }, productModel: null,
                     );
                   },
                   separatorBuilder: (context, index) =>
-                      const SizedBox(width: 15),
+                  const SizedBox(width: 15),
                 ),
               ),
               const SizedBox(height: 20),
@@ -220,7 +216,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   const CustomText(
                     text: 'Size',
                     fontSize: 20,
-                    color: AppColors.black,
                     fontWeight: FontWeight.bold,
                   ),
                   Row(
@@ -228,22 +223,17 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       CustomText(
                         text: 'EU',
                         fontSize: 18,
-                        color: AppColors.black,
                         fontWeight: FontWeight.bold,
                       ),
                       SizedBox(width: 10),
                       CustomText(
                         text: 'US',
                         fontSize: 18,
-                        color: AppColors.grey,
-                        fontWeight: FontWeight.bold,
                       ),
                       SizedBox(width: 10),
                       CustomText(
                         text: 'UK',
                         fontSize: 18,
-                        color: AppColors.grey,
-                        fontWeight: FontWeight.bold,
                       ),
                     ],
                   ),
@@ -267,7 +257,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   );
                 }),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               Row(
                 children: [
                   Column(
@@ -276,20 +266,19 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       const CustomText(
                         text: 'Price',
                         fontSize: 16,
-                        color: AppColors.grey,
                       ),
                       const SizedBox(height: 5),
                       CustomText(
-                        text: '\$${selectedProduct.price.toString()}',
+                        text: '\$${selectedProduct.price}',
                         fontSize: 20,
-                        color: AppColors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ],
                   ),
-                  const SizedBox(width: 120),
+                  const SizedBox(width: 20),
                   Expanded(
                     child: CustomButton(
+                      onPressed: () {},
                       child: const CustomText(
                         text: 'Add To Cart',
                         fontSize: 18,

@@ -19,11 +19,18 @@ class CustomBottomNavBar extends StatelessWidget {
   final double circleSize = 60.0;
 
   final List<NavBarItem> items = [
-    NavBarItem(selectedIcon: Icons.home, unselectedIcon: Icons.home_outlined, label: 'Home'),
-    NavBarItem(selectedIcon: Icons.favorite, unselectedIcon: Icons.favorite_border, label: 'Favorites'),
-    NavBarItem(selectedIcon: Icons.shopping_bag, unselectedIcon: Icons.shopping_bag_outlined, label: 'Cart'),
-    NavBarItem(selectedIcon: Icons.notifications, unselectedIcon: Icons.notifications_outlined, label: 'Notifications'),
-    NavBarItem(selectedIcon: Icons.person, unselectedIcon: Icons.person_outline, label: 'Profile'),
+    NavBarItem(
+        selectedIcon: Icons.favorite,
+        unselectedIcon: Icons.favorite_border,
+        label: 'Favorites'),
+    NavBarItem(
+        selectedIcon: Icons.shopping_bag,
+        unselectedIcon: Icons.shopping_bag_outlined,
+        label: 'Shopping'),
+    NavBarItem(
+        selectedIcon: Icons.person,
+        unselectedIcon: Icons.person_outline,
+        label: 'Profile'),
   ];
 
   CustomBottomNavBar({
@@ -34,9 +41,12 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
     final screenWidth = MediaQuery.of(context).size.width;
     final double itemWidth = screenWidth / items.length;
-    final double circleXPos = (itemWidth * selectedIndex) + (itemWidth / 2) - (circleSize / 2);
+    final double circleXPos =
+        (itemWidth * selectedIndex) + (itemWidth / 2) - (circleSize / 2);
 
     return SizedBox(
       height: 85,
@@ -54,21 +64,24 @@ class CustomBottomNavBar extends StatelessWidget {
               ),
               child: Container(
                 height: 70,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surface,
                   boxShadow: [
-                    BoxShadow(color: Colors.black12, blurRadius: 10, offset: Offset(0, -2)),
+                    if (!isDarkMode)
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 10,
+                          offset: const Offset(0, -2)),
                   ],
                 ),
                 child: Row(
                   children: List.generate(items.length, (index) {
-                    return _buildNavItem(index, itemWidth);
+                    return _buildNavItem(index, itemWidth, theme);
                   }),
                 ),
               ),
             ),
           ),
-
           AnimatedPositioned(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
@@ -79,12 +92,16 @@ class CustomBottomNavBar extends StatelessWidget {
               height: circleSize,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.blue,
+                color: theme.colorScheme.primary,
                 boxShadow: [
-                  BoxShadow(color: Colors.blue.withOpacity(0.4), blurRadius: 10, spreadRadius: 2),
+                  BoxShadow(
+                      color: theme.colorScheme.primary.withOpacity(0.4),
+                      blurRadius: 10,
+                      spreadRadius: 2),
                 ],
               ),
-              child: Icon(items[selectedIndex].selectedIcon, color: Colors.white, size: iconSize),
+              child: Icon(items[selectedIndex].selectedIcon,
+                  color: theme.colorScheme.onPrimary, size: iconSize),
             ),
           ),
         ],
@@ -92,7 +109,7 @@ class CustomBottomNavBar extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(int index, double itemWidth) {
+  Widget _buildNavItem(int index, double itemWidth, ThemeData theme) {
     bool isSelected = selectedIndex == index;
 
     return GestureDetector(
@@ -103,7 +120,9 @@ class CustomBottomNavBar extends StatelessWidget {
         color: Colors.transparent,
         child: Icon(
           items[index].unselectedIcon,
-          color: isSelected ? Colors.transparent : Colors.grey[600],
+          color: isSelected
+              ? Colors.transparent
+              : theme.textTheme.bodyMedium?.color,
           size: iconSize,
         ),
       ),
@@ -128,9 +147,12 @@ class CustomNavBarClipper extends CustomClipper<Path> {
 
     path.moveTo(0, 0);
     path.lineTo(notchCenterX - notchRadius * 1.5, 0);
-    path.quadraticBezierTo(notchCenterX - notchRadius, 0, notchCenterX - notchRadius, notchDepth / 2);
-    path.quadraticBezierTo(notchCenterX, notchDepth, notchCenterX + notchRadius, notchDepth / 2);
-    path.quadraticBezierTo(notchCenterX + notchRadius, 0, notchCenterX + notchRadius * 1.5, 0);
+    path.quadraticBezierTo(
+        notchCenterX - notchRadius, 0, notchCenterX - notchRadius, notchDepth / 2);
+    path.quadraticBezierTo(
+        notchCenterX, notchDepth, notchCenterX + notchRadius, notchDepth / 2);
+    path.quadraticBezierTo(
+        notchCenterX + notchRadius, 0, notchCenterX + notchRadius * 1.5, 0);
     path.lineTo(width, 0);
     path.lineTo(width, height);
     path.lineTo(0, height);

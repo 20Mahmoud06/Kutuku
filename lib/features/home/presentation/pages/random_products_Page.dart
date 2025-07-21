@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../../core/constants/colors.dart';
 import '../../../../core/routes/route_names.dart';
 import '../../../../core/widgets/custom_appbar.dart';
 import '../../../../core/widgets/custom_card.dart';
+import '../../../../core/widgets/custom_text.dart';
 import '../../../product_details/data/models/product_model.dart';
 
 class RandomProductsPage extends StatelessWidget {
@@ -16,17 +16,16 @@ class RandomProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar( // Using your CustomAppbar for consistency
+      appBar: CustomAppbar(
         leftIcon: Icons.arrow_back_ios_new,
-        titleText: 'New Arrivals', // Title for this page
+        titleText: 'New Arrivals',
         onLeftIconPressed: () {
           Navigator.of(context).pop();
         },
       ),
-      backgroundColor: AppColors.backgroundAppbar,
       body: products.isEmpty
           ? const Center(
-        child: Text('No new arrivals found.'),
+        child: CustomText(text: 'No new arrivals found.'),
       )
           : Padding(
         padding: const EdgeInsets.all(16.0),
@@ -42,7 +41,8 @@ class RandomProductsPage extends StatelessWidget {
             final product = products[index];
             return CustomCard(
               onTap: () {
-                Navigator.pushNamed(context, RouteNames.productDetails, arguments: product);
+                Navigator.pushNamed(context, RouteNames.productDetails,
+                    arguments: product);
               },
               model: product,
             );

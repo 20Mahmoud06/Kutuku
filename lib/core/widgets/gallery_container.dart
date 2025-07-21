@@ -14,24 +14,35 @@ class GalleryContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 60,
         height: 60,
+        padding: isSelected ? const EdgeInsets.all(2) : EdgeInsets.zero,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(18),
+          border: isSelected
+              ? Border.all(color: theme.colorScheme.primary, width: 2)
+              : null,
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: Center(
-            child: Image.network(
-              imageUrl,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => const Icon(
-                Icons.image_not_supported,
-                color: Colors.grey,
-                size: 30,
+        child: Container(
+          decoration: BoxDecoration(
+            color: theme.cardColor,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Center(
+              child: Image.network(
+                imageUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => const Icon(
+                  Icons.image_not_supported,
+                  color: Colors.grey,
+                  size: 30,
+                ),
               ),
             ),
           ),

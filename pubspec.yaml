@@ -41,6 +41,8 @@ dependencies:
   google_sign_in: ^6.2.1
   shared_preferences: ^2.0.15
   equatable: ^2.0.5
+  connectivity_plus: ^6.0.1
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

@@ -18,13 +18,13 @@ class BrandProductsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-      leftIcon: Icons.arrow_back_ios_new,
-      titleText: '$brand Shoes',
-      onLeftIconPressed: () {
-        Navigator.of(context).pop();
-      },
-    ),
-    body: Padding(
+        leftIcon: Icons.arrow_back_ios_new,
+        titleText: '$brand Shoes',
+        onLeftIconPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GridView.builder(
           itemCount: products.length,
@@ -38,7 +38,8 @@ class BrandProductsPage extends StatelessWidget {
             final product = products[index];
             return CustomCard(
               onTap: () {
-                Navigator.pushNamed(context, RouteNames.productDetails, arguments: product);
+                Navigator.pushNamed(context, RouteNames.productDetails,
+                    arguments: product);
               },
               model: product,
             );
@@ -48,4 +49,3 @@ class BrandProductsPage extends StatelessWidget {
     );
   }
 }
-

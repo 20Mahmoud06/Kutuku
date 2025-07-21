@@ -10,6 +10,61 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit(this._authService) : super(AuthInitial());
 
+  void checkAuthentication() {
+    emit(AuthLoading());
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        emit(Authenticated(user));
+      } else {
+        emit(Unauthenticated());
+      }
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+  Future<void> deleteAccount() async {
+    emit(AuthLoading());
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await user.delete();
+        emit(Unauthenticated());
+      } else {
+        emit(AuthError("No user is signed in to delete."));
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        emit(AuthError(
+            'This action is sensitive. Please sign out and log back in before deleting your account.'));
+      } else {
+        emit(AuthError(e.message ?? 'Failed to delete account.'));
+      }
+    } catch (e) {
+      emit(AuthError("An unexpected error occurred: $e"));
+    }
+  }
+  Future<void> updatePassword(String newPassword) async {
+    emit(AuthLoading());
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await user.updatePassword(newPassword);
+        emit(Authenticated(user));
+      } else {
+        emit(AuthError("No user is currently signed in."));
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        emit(AuthError('Please log out and log back in to update your password.'));
+      } else {
+        emit(AuthError(e.message ?? 'Failed to update password.'));
+      }
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
   Future<void> signUp({
     required String email,
     required String password,
@@ -77,6 +132,16 @@ class AuthCubit extends Cubit<AuthState> {
       }
     } catch (e) {
       emit(AuthError("An unexpected error occurred during Google sign-in: $e"));
+    }
+  }
+
+  Future<void> signOut() async {
+    emit(AuthLoading());
+    try {
+      await _authService.signOut();
+      emit(Unauthenticated());
+    } catch (e) {
+      emit(AuthError("Sign out failed: $e"));
     }
   }
 }

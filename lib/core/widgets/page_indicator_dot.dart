@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants/colors.dart';
-
 class PageIndicatorDot extends StatelessWidget {
   final bool isActive;
 
@@ -9,12 +7,13 @@ class PageIndicatorDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       height: 8,
       width: isActive ? 24 : 8,
       decoration: BoxDecoration(
-        color: isActive ? AppColors.button : AppColors.lightGrey,
+        color: isActive ? theme.colorScheme.primary : Colors.grey.shade400,
         borderRadius: BorderRadius.circular(12),
       ),
     );

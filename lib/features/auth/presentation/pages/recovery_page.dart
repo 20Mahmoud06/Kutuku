@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project/core/constants/colors.dart';
 import 'package:final_project/core/services/firebase_auth_service.dart';
 import 'package:final_project/core/widgets/custom_button.dart';
 import 'package:final_project/core/widgets/custom_text.dart';
@@ -42,8 +41,7 @@ class _RecoveryPageState extends State<RecoveryPage> {
 
     try {
       await _authService.sendPasswordResetEmail(emailController.text.trim());
-      _showSnackBar(
-          "Password reset email sent! Please check your inbox.",
+      _showSnackBar("Password reset email sent! Please check your inbox.",
           isError: false);
       if (mounted) {
         Navigator.pop(context);
@@ -72,7 +70,6 @@ class _RecoveryPageState extends State<RecoveryPage> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        backgroundColor: AppColors.white,
         body: SafeArea(
           child: Center(
             child: SingleChildScrollView(
@@ -88,19 +85,16 @@ class _RecoveryPageState extends State<RecoveryPage> {
                         textAlign: TextAlign.center,
                         text: 'Recovery Password',
                         fontSize: 30,
-                        color: AppColors.black,
                         fontWeight: FontWeight.bold,
                       ),
                       const CustomText(
                         text: 'Please Enter Your Email Address To',
                         fontSize: 18,
-                        color: AppColors.grey,
                         fontWeight: FontWeight.w400,
                       ),
                       const CustomText(
                         text: 'Receive a Verification Code',
                         fontSize: 18,
-                        color: AppColors.grey,
                         fontWeight: FontWeight.w400,
                       ),
                       const SizedBox(height: 70),

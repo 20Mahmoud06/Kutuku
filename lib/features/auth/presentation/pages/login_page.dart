@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:final_project/core/constants/colors.dart';
 import 'package:final_project/core/routes/route_names.dart';
 import 'package:final_project/core/widgets/custom_button.dart';
 import 'package:final_project/core/widgets/custom_text.dart';
@@ -50,12 +49,11 @@ class LoginPage extends StatelessWidget {
                         const CustomText(
                             text: 'Hello Again!',
                             fontSize: 30,
-                            color: AppColors.black,
                             fontWeight: FontWeight.bold),
                         const CustomText(
-                            text: 'Welcome Back You’ve Been Missed!',
-                            fontSize: 20,
-                            color: AppColors.grey),
+                          text: 'Welcome Back You’ve Been Missed!',
+                          fontSize: 20,
+                        ),
                         const SizedBox(height: 70),
                         CustomTextFormField(
                           controller: emailController,
@@ -63,7 +61,8 @@ class LoginPage extends StatelessWidget {
                           textInputAction: TextInputAction.next,
                           validator: (v) {
                             if (v!.isEmpty) return 'Please enter your email';
-                            if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(v)) return 'Please enter a valid email';
+                            if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(v))
+                              return 'Please enter a valid email';
                             return null;
                           },
                         ),
@@ -73,16 +72,18 @@ class LoginPage extends StatelessWidget {
                           text: 'Password',
                           isPassword: true,
                           textInputAction: TextInputAction.done,
-                          validator: (v) => v!.isEmpty ? 'Please enter your password' : null,
+                          validator: (v) =>
+                          v!.isEmpty ? 'Please enter your password' : null,
                         ),
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
-                            onPressed: () => Navigator.pushNamed(context, RouteNames.recovery),
+                            onPressed: () =>
+                                Navigator.pushNamed(context, RouteNames.recovery),
                             child: const CustomText(
-                                text: 'Recovery Password',
-                                fontSize: 16,
-                                color: AppColors.grey),
+                              text: 'Recovery Password',
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -95,20 +96,27 @@ class LoginPage extends StatelessWidget {
                                   : () {
                                 if (_keyForm.currentState!.validate()) {
                                   context.read<AuthCubit>().signIn(
-                                    email: emailController.text.trim(),
-                                    password: passwordController.text.trim(),
+                                    email:
+                                    emailController.text.trim(),
+                                    password:
+                                    passwordController.text.trim(),
                                   );
                                 }
                               },
                               child: isLoading
-                                  ? const CircularProgressIndicator(color: Colors.white)
-                                  : const CustomText(text: 'Log In', fontSize: 20, color: Colors.white),
+                                  ? const CircularProgressIndicator(
+                                  color: Colors.white)
+                                  : const CustomText(
+                                  text: 'Log In',
+                                  fontSize: 20,
+                                  color: Colors.white),
                             );
                           },
                         ),
                         const SizedBox(height: 20),
                         GoogleSigninButton(
-                          onPressed: () => context.read<AuthCubit>().signInWithGoogle(),
+                          onPressed: () =>
+                              context.read<AuthCubit>().signInWithGoogle(),
                           text: "Login in with Google",
                         ),
                         const SizedBox(height: 10),
@@ -116,15 +124,15 @@ class LoginPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const CustomText(
-                                text: 'Don’t have an account?',
-                                fontSize: 16,
-                                color: AppColors.grey),
+                              text: 'Don’t have an account?',
+                              fontSize: 16,
+                            ),
                             TextButton(
-                              onPressed: () => Navigator.pushNamed(context, RouteNames.signup),
+                              onPressed: () =>
+                                  Navigator.pushNamed(context, RouteNames.signup),
                               child: const CustomText(
                                   text: 'Sign Up for free',
                                   fontSize: 16,
-                                  color: AppColors.black,
                                   fontWeight: FontWeight.w500),
                             )
                           ],

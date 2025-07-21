@@ -3,6 +3,7 @@ import 'dart:ui';
 
 class AppColors{
   static const Color button = Color(0xFF5A9DFF);
+  static const Color surface = Color(0xFF2C313A);
   static const Color splash = Color(0xFF514eb7);
   static const Color border = Color(0xFFE0E0E0);
   static const Color background = Color(0xFFD6E6FF);
