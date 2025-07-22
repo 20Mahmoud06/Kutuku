@@ -16,6 +16,9 @@ jobs:
         with:
           flutter-version: '3.22.2'
 
+      - name: Check Dart Version
+        run: dart --version
+
       - name: Install CocoaPods
         run: |
           sudo gem install cocoapods
@@ -27,7 +30,7 @@ jobs:
         run: flutter build ipa --release --no-codesign
 
       - name: Upload IPA
-        uses: actions/upload-artifact@v4 # ✅ تحديث النسخة
+        uses: actions/upload-artifact@v4
         with:
           name: Kutuku-iOS
           path: build/ios/ipa/*.ipa
