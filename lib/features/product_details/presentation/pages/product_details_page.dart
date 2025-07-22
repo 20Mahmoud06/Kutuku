@@ -1,10 +1,16 @@
 import 'package:final_project/core/widgets/custom_appbar.dart';
-import 'package:final_project/core/widgets/custom_button.dart';
+import 'package:final_project/core/widgets/custom_card.dart';
 import 'package:final_project/core/widgets/custom_text.dart';
 import 'package:final_project/core/widgets/gallery_container.dart';
 import 'package:final_project/core/widgets/sizes_container.dart';
+import 'package:final_project/features/cart/data/models/cart_item_model.dart';
+import 'package:final_project/features/home/presentation/cubit/home_cubit.dart';
 import 'package:final_project/features/product_details/data/models/sizes_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/widgets/custom_button.dart';
+import '../../../cart/data/presentation/cubit/cart_cubit.dart';
+import '../../../cart/data/presentation/pages/cart_page.dart';
 import '../../data/models/product_model.dart';
 
 class ProductDetailsPage extends StatefulWidget {
@@ -17,8 +23,8 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  int _selectedGalleryIndex = 0;
   int _selectedSizeIndex = 0;
+  final ScrollController _scrollController = ScrollController();
 
   late ProductModel selectedProduct;
 
@@ -29,16 +35,24 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    List<String> galleryImages = [
-      selectedProduct.image,
-      selectedProduct.image,
-      selectedProduct.image,
-    ];
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppbar(
-          rightIcon: const Icon(Icons.shopping_bag_outlined),
+          rightIcon: IconButton(
+            icon: const Icon(Icons.shopping_bag_outlined),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const CartPage()),
+              );
+            },
+          ),
           leftIcon: Icons.arrow_back_ios_new,
           titleText: 'Men’s Shoes',
           onLeftIconPressed: () {
@@ -49,9 +63,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           builder: (context, constraints) {
             bool isWide = constraints.maxWidth > 600;
             if (isWide) {
-              return _buildWideLayout(galleryImages);
+              return _buildWideLayout();
             } else {
-              return _buildNarrowLayout(galleryImages);
+              return _buildNarrowLayout();
             }
           },
         ),
@@ -59,17 +73,17 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     );
   }
 
-  Widget _buildNarrowLayout(List<String> galleryImages) {
+  Widget _buildNarrowLayout() {
     return Column(
       children: [
         _buildProductImage(),
         const SizedBox(height: 20),
-        Expanded(child: _buildProductInfo(galleryImages)),
+        Expanded(child: _buildProductInfo()),
       ],
     );
   }
 
-  Widget _buildWideLayout(List<String> galleryImages) {
+  Widget _buildWideLayout() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -82,7 +96,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             ),
           ),
         ),
-        Expanded(flex: 1, child: _buildProductInfo(galleryImages)),
+        Expanded(flex: 1, child: _buildProductInfo()),
       ],
     );
   }
@@ -142,7 +156,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     );
   }
 
-  Widget _buildProductInfo(List<String> galleryImages) {
+  Widget _buildProductInfo() {
     final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
@@ -153,6 +167,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         ),
       ),
       child: SingleChildScrollView(
+        controller: _scrollController,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
           child: Column(
@@ -181,34 +196,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 fontSize: 16,
               ),
               const SizedBox(height: 20),
-              const CustomText(
-                text: 'Gallery',
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              const SizedBox(height: 15),
-              SizedBox(
-                height: 80,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: galleryImages.length,
-                  itemBuilder: (context, index) {
-                    final imageUrl = galleryImages[index];
-                    final isSelected = _selectedGalleryIndex == index;
-                    return GalleryContainer(
-                      imageUrl: imageUrl,
-                      isSelected: isSelected,
-                      onTap: () {
-                        setState(() {
-                          _selectedGalleryIndex = index;
-                        });
-                      }, productModel: null,
-                    );
-                  },
-                  separatorBuilder: (context, index) =>
-                  const SizedBox(width: 15),
-                ),
-              ),
+              _buildMoreFromBrandSection(),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,15 +214,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         fontWeight: FontWeight.bold,
                       ),
                       SizedBox(width: 10),
-                      CustomText(
-                        text: 'US',
-                        fontSize: 18,
-                      ),
+                      CustomText(text: 'US', fontSize: 18),
                       SizedBox(width: 10),
-                      CustomText(
-                        text: 'UK',
-                        fontSize: 18,
-                      ),
+                      CustomText(text: 'UK', fontSize: 18),
                     ],
                   ),
                 ],
@@ -263,10 +245,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomText(
-                        text: 'Price',
-                        fontSize: 16,
-                      ),
+                      const CustomText(text: 'Price', fontSize: 16),
                       const SizedBox(height: 5),
                       CustomText(
                         text: '\$${selectedProduct.price}',
@@ -275,10 +254,24 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(width: 20),
+                  const SizedBox(width: 120),
                   Expanded(
                     child: CustomButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        final cartItem = CartItem(
+                          product: selectedProduct,
+                          selectedSize:
+                          SizesModel.sizes[_selectedSizeIndex].size,
+                        );
+                        context.read<CartCubit>().addToCart(cartItem);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Added to cart!'),
+                            backgroundColor: Colors.green,
+                            duration: Duration(seconds: 1),
+                          ),
+                        );
+                      },
                       child: const CustomText(
                         text: 'Add To Cart',
                         fontSize: 18,
@@ -293,6 +286,64 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildMoreFromBrandSection() {
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        if (state is HomeLoaded) {
+          final sameBrandProducts = state.allProducts
+              .where((p) => p.brand == selectedProduct.brand)
+              .toList();
+
+          if (sameBrandProducts.length <= 1) {
+            return const SizedBox.shrink();
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(
+                text: 'More from ${selectedProduct.brand}',
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              const SizedBox(height: 15),
+              SizedBox(
+                height: 80,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: sameBrandProducts.length,
+                  itemBuilder: (context, index) {
+                    final product = sameBrandProducts[index];
+                    final isSelected = product.id == selectedProduct.id;
+                    return GalleryContainer(
+                      imageUrl: product.image,
+                      isSelected: isSelected,
+                      onTap: () {
+                        if (isSelected) return;
+                        setState(() {
+                          selectedProduct = product;
+                          _selectedSizeIndex = 0;
+                          _scrollController.animateTo(
+                            0,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeOut,
+                          );
+                        });
+                      },
+                    );
+                  },
+                  separatorBuilder: (context, index) =>
+                  const SizedBox(width: 15),
+                ),
+              ),
+            ],
+          );
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 }

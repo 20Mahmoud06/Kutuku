@@ -10,6 +10,7 @@ import '../../../../core/widgets/brand_list_item.dart';
 import '../../../../core/widgets/custom_appbar.dart';
 import '../../../../core/widgets/custom_navigation_bar.dart';
 import '../../../../core/widgets/custom_side_menu.dart';
+import '../../../cart/data/presentation/pages/cart_page.dart';
 import '../../../favorites/presentation/pages/favorites_page.dart';
 import '../../data/models/brand_model.dart';
 import '../cubit/home_cubit.dart';
@@ -56,7 +57,14 @@ class _HomePageState extends State<HomePage> {
         key: _scaffoldKey,
         drawer: const CustomSideMenu(),
         appBar: CustomAppbar(
-          rightIcon: const Icon(Icons.shopping_bag_outlined),
+          rightIcon: IconButton(
+            icon: const Icon(Icons.shopping_bag_outlined),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const CartPage()),
+              );
+            },
+          ),
           leftIcon: Icons.apps,
           titleText: 'Mondolibug, Sylhet',
           showLocation: true,

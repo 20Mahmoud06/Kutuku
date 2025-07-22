@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeCubit extends Cubit<ThemeMode> {
-  ThemeCubit() : super(ThemeMode.system) {
+  // The initial state is now explicitly light mode
+  ThemeCubit() : super(ThemeMode.light) {
     _loadTheme();
   }
 
@@ -11,7 +12,8 @@ class ThemeCubit extends Cubit<ThemeMode> {
 
   void _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
-    final themeIndex = prefs.getInt(_themeKey) ?? ThemeMode.system.index;
+    // If no theme has been saved, default to light mode
+    final themeIndex = prefs.getInt(_themeKey) ?? ThemeMode.light.index;
     emit(ThemeMode.values[themeIndex]);
   }
 

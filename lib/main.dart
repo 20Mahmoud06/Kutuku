@@ -16,6 +16,7 @@ import 'core/services/no_internet_page.dart';
 import 'core/themes/app_themes.dart';
 import 'core/themes/theme_cubit.dart';
 import 'features/auth/presentation/pages/login_page.dart';
+import 'features/cart/data/presentation/cubit/cart_cubit.dart';
 import 'features/favorites/presentation/cubit/favourites_cubit.dart';
 import 'features/home/presentation/pages/home_page.dart';
 
@@ -106,6 +107,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         ),
         BlocProvider<FavoritesCubit>(
           create: (context) => FavoritesCubit(),
+        ),
+        BlocProvider<CartCubit>(
+          create: (context) => CartCubit(),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(

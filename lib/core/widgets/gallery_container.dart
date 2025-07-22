@@ -5,7 +5,7 @@ class GalleryContainer extends StatelessWidget {
     super.key,
     required this.imageUrl,
     required this.isSelected,
-    required this.onTap, required productModel,
+    required this.onTap,
   });
 
   final String imageUrl;
