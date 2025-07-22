@@ -14,14 +14,11 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.2'
-
-      - name: Check Dart Version
-        run: dart --version
+          flutter-version: '3.22.1' # أو أي إصدار حديث
+          channel: 'beta'
 
       - name: Install CocoaPods
-        run: |
-          sudo gem install cocoapods
+        run: sudo gem install cocoapods
 
       - name: Get Flutter Dependencies
         run: flutter pub get
