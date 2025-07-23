@@ -10,13 +10,12 @@ jobs:
       - name: 1. Checkout Repository
         uses: actions/checkout@v4
 
-      # ===== الخطوة السحرية الجديدة =====
-      # هذه الخطوة ستقوم بإصلاح اسم المشروع تلقائيًا داخل السيرفر
+      # هذه هي الخطوة التي تقوم بالإصلاح التلقائي
       - name: 2. Force Fix Package Name
         run: |
-          echo "Searching for invalid package name in pubspec.yaml and fixing it..."
+          echo "Forcing fix on pubspec.yaml..."
           sed -i '' 's/name: Kutuku/name: kutuku/g' pubspec.yaml
-          echo "File after fixing:"
+          echo "File after fix:"
           cat pubspec.yaml
 
       - name: 3. Set up Flutter
