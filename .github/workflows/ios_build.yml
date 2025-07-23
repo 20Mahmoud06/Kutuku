@@ -13,7 +13,7 @@ jobs:
       - name: 2. Set up Flutter (Cache Disabled)
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.1'
+          flutter-version: '3.22.2'
           cache: false # Disabled cache to ensure a 100% clean state
 
       - name: 3. Clean Project Thoroughly
