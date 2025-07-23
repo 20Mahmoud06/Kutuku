@@ -10,7 +10,6 @@ jobs:
       - name: 1. Checkout Repository
         uses: actions/checkout@v4
 
-      # ===== الخطوة النووية: إعادة كتابة الملف بالكامل =====
       - name: 2. Force Overwrite pubspec.yaml
         run: |
           echo "--- Overwriting pubspec.yaml entirely to ensure correctness ---"
@@ -71,7 +70,7 @@ flutter:
             echo $GOOGLE_SERVICE_PLIST_BASE64 | base64 --decode > $GITHUB_WORKSPACE/ios/Runner/GoogleService-Info.plist
             echo "GoogleService-Info.plist created successfully."
           fi
-      
+
       - name: 5. Restore/Generate Native Project Files
         run: flutter create .
 
