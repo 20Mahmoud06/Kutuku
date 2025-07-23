@@ -1,4 +1,4 @@
-name: Build and Release iOS IPA (Final Attempt)
+name: Build and Release iOS IPA (Ultimate Fix)
 
 on:
   workflow_dispatch:
@@ -10,40 +10,80 @@ jobs:
       - name: 1. Checkout Repository
         uses: actions/checkout@v4
 
-      - name: 2. Set up Flutter
+      - name: 2. Force Overwrite pubspec.yaml
+        run: |
+          cat > pubspec.yaml << EOF
+          name: final_project
+          description: "A new Flutter project."
+          publish_to: "none"
+          version: 1.0.0+1
+          environment:
+            sdk: ">=3.4.0 <4.0.0"
+          dependencies:
+            flutter:
+              sdk: flutter
+            cupertino_icons: ^1.0.8
+            dio: ^5.8.0+1
+            flutter_bloc: ^9.1.1
+            firebase_core: ^2.30.0
+            firebase_auth: ^4.17.8
+            google_sign_in: ^6.2.1
+            shared_preferences: ^2.0.15
+            equatable: ^2.0.5
+            connectivity_plus: ^6.0.1
+            image_picker: ^1.1.2
+            flutter_credit_card: ^4.0.1
+          dev_dependencies:
+            flutter_test:
+              sdk: flutter
+            flutter_lints: ^4.0.0
+          flutter:
+            uses-material-design: true
+            assets:
+              - assets/onboarding/
+              - assets/icons/
+              - assets/logos/
+              - assets/shoes/
+          EOF
+
+      - name: 3. Force Create Podfile
+        run: |
+          cat > ios/Podfile << EOF
+          # Define a global platform for your project
+          platform :ios, '13.0'
+          # CocoaPods's plugins integration
+          eval(File.read(File.join('..', '.flutter', 'ios_podhelper.rb')), binding)
+          target 'Runner' do
+            use_frameworks!
+            use_modular_headers!
+            flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+          end
+          post_install do |installer|
+            installer.pods_project.targets.each do |target|
+              flutter_additional_ios_build_settings(target)
+            end
+          end
+          EOF
+
+      - name: 4. Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.1'
           cache: true
 
-      # ===== الخطوة الحاسمة: حذف مجلد ios القديم وإعادة بنائه =====
-      - name: 3. Nuke and Recreate iOS Project
-        run: |
-          echo "--- Deleting old ios directory to ensure a clean slate ---"
-          rm -rf ios
-          echo "--- Creating a fresh ios project from pubspec ---"
-          # This will now succeed because your pubspec.yaml name is correct
-          flutter create --platforms=ios .
-
-      - name: 4. Add GoogleService-Info.plist from Secret
+      - name: 5. Add GoogleService-Info.plist from Secret
         env:
           GOOGLE_SERVICE_PLIST_BASE64: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}
         run: |
-          echo "Adding GoogleService-Info.plist to the new ios/Runner directory..."
           echo $GOOGLE_SERVICE_PLIST_BASE64 | base64 --decode > $GITHUB_WORKSPACE/ios/Runner/GoogleService-Info.plist
+      
+      - name: 6. Get Flutter Dependencies
+        run: flutter pub get
 
-      - name: 5. Modify Podfile for Firebase
-        run: |
-          echo "--- Modifying the new Podfile to set iOS platform to 13.0 ---"
-          # This command uncomments and sets the platform version for Firebase compatibility
-          sed -i '' "s/# platform :ios, '.*/platform :ios, '13.0'/" ios/Podfile
-          echo "--- Podfile after modification: ---"
-          cat ios/Podfile
-
-      - name: 6. Build IPA
+      - name: 7. Build IPA
         run: flutter build ipa --release --no-codesign
 
-      - name: 7. Upload IPA Artifact
+      - name: 8. Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-ipa
