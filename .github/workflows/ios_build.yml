@@ -14,20 +14,20 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.2'
-          channel: 'stable'
+          flutter-version: '3.19.6' # ✅ مجربة
+          channel: stable
 
       - name: Install CocoaPods
         run: sudo gem install cocoapods
 
-      - name: Get Flutter Dependencies
+      - name: Install dependencies
         run: flutter pub get
 
-      - name: Build iOS IPA
+      - name: Build IPA
         run: flutter build ipa --release --no-codesign
 
-      - name: Upload IPA
+      - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Kutuku-iOS
+          name: FlutterIpaExport
           path: build/ios/ipa/*.ipa
