@@ -15,38 +15,29 @@ jobs:
         with:
           channel: 'stable'
           flutter-version: '3.22.1'
-          cache: true # Enable caching for faster builds
+          cache: true
 
-      - name: 3. Add GoogleService-Info.plist
+      - name: 3. Add GoogleService-Info.plist from Secret
         env:
-          # You MUST create this secret in your repo's settings
           GOOGLE_SERVICE_PLIST_BASE64: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}
         run: |
           echo "Creating GoogleService-Info.plist..."
-          # Check if the secret is set
           if [ -z "$GOOGLE_SERVICE_PLIST_BASE64" ]; then
-            echo "WARNING: GOOGLE_SERVICE_INFO_PLIST_BASE64 secret is not set. The build might fail if Firebase services are initialized at build time."
+            echo "ERROR: GOOGLE_SERVICE_INFO_PLIST_BASE64 secret is not set."
+            exit 1
           else
-            # Decode the base64 secret and create the file
             echo $GOOGLE_SERVICE_PLIST_BASE64 | base64 --decode > $GITHUB_WORKSPACE/ios/Runner/GoogleService-Info.plist
             echo "GoogleService-Info.plist created successfully."
           fi
 
-      - name: 4. Clean and Get Dependencies
-        run: |
-          flutter clean
-          flutter pub get
+      - name: 4. Get Dependencies
+        run: flutter pub get
 
-      - name: 5. Install iOS Dependencies (CocoaPods)
-        # This step runs 'pod install' explicitly for better error logging
-        run: |
-          cd ios
-          pod install --repo-update
-
-      - name: 6. Build IPA
+      # The 'flutter build' command will now handle running 'pod install' automatically and correctly.
+      - name: 5. Build IPA
         run: flutter build ipa --release --no-codesign
 
-      - name: 7. Upload IPA Artifact
+      - name: 6. Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-ipa
