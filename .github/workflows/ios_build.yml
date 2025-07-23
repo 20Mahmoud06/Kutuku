@@ -10,46 +10,47 @@ jobs:
       - name: 1. Checkout Repository
         uses: actions/checkout@v4
 
+      # ===== تم إصلاح هذه الخطوة لتجنب الأخطاء =====
       - name: 2. Force Overwrite pubspec.yaml
         run: |
-          echo "--- Overwriting pubspec.yaml entirely to ensure correctness ---"
-          echo 'name: final_project
-description: "A new Flutter project."
-publish_to: "none"
-version: 1.0.0+1
+          cat > pubspec.yaml << EOF
+          name: final_project
+          description: "A new Flutter project."
+          publish_to: "none"
+          version: 1.0.0+1
 
-environment:
-  sdk: ">=3.4.0 <4.0.0"
+          environment:
+            sdk: ">=3.4.0 <4.0.0"
 
-dependencies:
-  flutter:
-    sdk: flutter
-  cupertino_icons: ^1.0.8
-  dio: ^5.8.0+1
-  flutter_bloc: ^9.1.1
-  firebase_core: ^2.30.0
-  firebase_auth: ^4.17.8
-  google_sign_in: ^6.2.1
-  shared_preferences: ^2.0.15
-  equatable: ^2.0.5
-  connectivity_plus: ^6.0.1
-  image_picker: ^1.1.2
-  flutter_credit_card: ^4.0.1
+          dependencies:
+            flutter:
+              sdk: flutter
+            cupertino_icons: ^1.0.8
+            dio: ^5.8.0+1
+            flutter_bloc: ^9.1.1
+            firebase_core: ^2.30.0
+            firebase_auth: ^4.17.8
+            google_sign_in: ^6.2.1
+            shared_preferences: ^2.0.15
+            equatable: ^2.0.5
+            connectivity_plus: ^6.0.1
+            image_picker: ^1.1.2
+            flutter_credit_card: ^4.0.1
 
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^4.0.0
+          dev_dependencies:
+            flutter_test:
+              sdk: flutter
+            flutter_lints: ^4.0.0
 
-flutter:
-  uses-material-design: true
-  assets:
-    - assets/onboarding/
-    - assets/icons/
-    - assets/logos/
-    - assets/shoes/
-' > pubspec.yaml
-          echo "--- New pubspec.yaml content: ---"
+          flutter:
+            uses-material-design: true
+            assets:
+              - assets/onboarding/
+              - assets/icons/
+              - assets/logos/
+              - assets/shoes/
+          EOF
+          echo "--- Verifying new pubspec.yaml content: ---"
           cat pubspec.yaml
 
       - name: 3. Set up Flutter
@@ -64,13 +65,13 @@ flutter:
         run: |
           echo "Creating GoogleService-Info.plist..."
           if [ -z "$GOOGLE_SERVICE_PLIST_BASE64" ]; then
-            echo "ERROR: GOOGLE_SERVICE_INFO_PLIST_BASE64 secret is not set."
+            echo "ERROR: GOOGLE_SERVICE_PLIST_BASE64 secret is not set."
             exit 1
           else
             echo $GOOGLE_SERVICE_PLIST_BASE64 | base64 --decode > $GITHUB_WORKSPACE/ios/Runner/GoogleService-Info.plist
             echo "GoogleService-Info.plist created successfully."
           fi
-
+      
       - name: 5. Restore/Generate Native Project Files
         run: flutter create .
 
