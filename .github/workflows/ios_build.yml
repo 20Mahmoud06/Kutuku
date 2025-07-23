@@ -10,7 +10,6 @@ jobs:
       - name: 1. Checkout Repository
         uses: actions/checkout@v4
 
-      # ===== تم إصلاح هذه الخطوة لتجنب الأخطاء =====
       - name: 2. Force Overwrite pubspec.yaml
         run: |
           cat > pubspec.yaml << EOF
@@ -72,16 +71,13 @@ jobs:
             echo "GoogleService-Info.plist created successfully."
           fi
       
-      - name: 5. Restore/Generate Native Project Files
-        run: flutter create .
-
-      - name: 6. Get Flutter Dependencies
+      - name: 5. Get Flutter Dependencies
         run: flutter pub get
 
-      - name: 7. Build IPA
+      - name: 6. Build IPA
         run: flutter build ipa --release --no-codesign
 
-      - name: 8. Upload IPA Artifact
+      - name: 7. Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-ipa
