@@ -1,4 +1,4 @@
-name: Build and Release iOS IPA (Ultimate Fix)
+name: The Final Boss Build
 
 on:
   workflow_dispatch:
@@ -10,7 +10,16 @@ jobs:
       - name: 1. Checkout Repository
         uses: actions/checkout@v4
 
-      - name: 2. Force Overwrite pubspec.yaml
+      - name: 2. Set up Flutter (Cache Disabled)
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.1'
+          cache: false # Disabled cache to ensure a 100% clean state
+
+      - name: 3. Clean Project Thoroughly
+        run: flutter clean
+
+      - name: 4. Force Overwrite pubspec.yaml
         run: |
           cat > pubspec.yaml << EOF
           name: final_project
@@ -46,12 +55,10 @@ jobs:
               - assets/shoes/
           EOF
 
-      - name: 3. Force Create Podfile
+      - name: 5. Force Create Podfile
         run: |
           cat > ios/Podfile << EOF
-          # Define a global platform for your project
           platform :ios, '13.0'
-          # CocoaPods's plugins integration
           eval(File.read(File.join('..', '.flutter', 'ios_podhelper.rb')), binding)
           target 'Runner' do
             use_frameworks!
@@ -65,25 +72,28 @@ jobs:
           end
           EOF
 
-      - name: 4. Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.1'
-          cache: true
-
-      - name: 5. Add GoogleService-Info.plist from Secret
+      - name: 6. Add GoogleService-Info.plist from Secret
         env:
           GOOGLE_SERVICE_PLIST_BASE64: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}
         run: |
           echo $GOOGLE_SERVICE_PLIST_BASE64 | base64 --decode > $GITHUB_WORKSPACE/ios/Runner/GoogleService-Info.plist
-      
-      - name: 6. Get Flutter Dependencies
+
+      - name: 7. Get Dependencies
         run: flutter pub get
 
-      - name: 7. Build IPA
+      - name: 8. Verify Critical File Generation
+        run: |
+          if [ ! -f ".flutter/ios_podhelper.rb" ]; then
+            echo "FATAL ERROR: flutter pub get FAILED to create the critical ios_podhelper.rb script. This is the root cause."
+            exit 1
+          else
+            echo "SUCCESS: The critical ios_podhelper.rb script was found. Proceeding to build."
+          fi
+
+      - name: 9. Build IPA
         run: flutter build ipa --release --no-codesign
 
-      - name: 8. Upload IPA Artifact
+      - name: 10. Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-ipa
