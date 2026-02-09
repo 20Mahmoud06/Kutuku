@@ -79,10 +79,14 @@ Follow these steps to run the project locally:
 
 ### Steps
 
-###bash
+### bash
+
 git clone https://github.com/20Mahmoud06/Kutuku.git
+
 cd Kutuku
+
 flutter pub get
+
 flutter run
 
 🌟 Performance
