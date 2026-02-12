@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/kutuku.png" width="100%" />
+  <img src="assets/kutuku.jpg" width="100%" />
 </p>
 
 <h1 align="center">👟 Kutuku</h1>
