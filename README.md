@@ -1,48 +1,122 @@
-# Kutuku 👟
+<p align="center">
+  <img src="assets/kutuku.png" width="100%" />
+</p>
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Flutter Version](https://img.shields.io/badge/Flutter-3.x-blue)
+<h1 align="center">👟 Kutuku</h1>
 
-An elegant e-commerce mobile application for shoe enthusiasts. Browse and shop for the latest shoes from your favorite brands like Adidas, Puma, Nike, and more, all in one place. The app features a clean and modern white and purple theme.
+<p align="center">
+A modern and elegant sneakers e-commerce mobile application built with Flutter & Firebase.
+<br/>
+Shop Smart. Shop Fast. Shop Kutuku. 💜
+</p>
+
+<p align="center">
+  <a href="https://github.com/20Mahmoud06/Kutuku">
+    <img src="https://img.shields.io/badge/View-Repository-purple?style=for-the-badge" />
+  </a>
+  <img src="https://img.shields.io/badge/Flutter-3.x-blue?style=for-the-badge&logo=flutter" />
+  <img src="https://img.shields.io/badge/Firebase-Auth-orange?style=for-the-badge&logo=firebase" />
+  <img src="https://img.shields.io/badge/State%20Management-Bloc-purple?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" />
+</p>
+
+---
+
+## 🚀 Overview
+
+Kutuku is a modern sneakers shopping application built entirely with Flutter.
+
+It provides a smooth and elegant shopping experience where users can browse top sneaker brands like Nike, Adidas, Puma, and more — all inside a clean white & purple interface.
+
+Designed with performance and simplicity in mind to work efficiently even on mid & low-end devices 💜
 
 ---
 
 ## ✨ Features
 
-Here are some of the key features of the Kutuku app:
+### 🔐 Secure Authentication
+- Email & Password Sign Up / Login
+- Firebase Authentication
+- Google Sign-In integration
+- Form validation & error handling
 
-- **User Authentication:** Secure sign-up and login using Firebase Authentication.
-- **Google Sign-In:** Quick access with Google accounts for a seamless experience.
-- **Product Browse:** A smooth and intuitive interface to explore various shoe models.
-- **Brand Filtering:** Easily find shoes from top brands.
-- **Product Details:** View comprehensive details for each shoe, including available sizes, description, and an image gallery.
-- **Modern UI/UX:** A clean and beautiful user interface with a distinctive white and purple color scheme.
-- **Onboarding Flow:** A simple and attractive introduction for new users.
+### 👟 Product Browsing
+- Browse sneakers by brand
+- Smooth scrolling experience
+- Clean product cards layout
+- Dynamic data from MockAPI
+
+### 🏷️ Product Details
+- High-quality product images
+- Available sizes selection
+- Detailed description
+- Add to cart functionality
+
+### 🛒 Smart Cart System
+- Add / Remove products
+- Quantity management
+- Real-time total price calculation
+
+### 🚀 Onboarding Experience
+- Clean and attractive onboarding screens
+- Smooth transitions
+- Minimal design
+
+### 💳 Payment (Coming Soon)
+- Secure checkout flow
+- Payment gateway integration
+- Order confirmation system
 
 ---
 
-## 🛠️ Built With
+## 🛠️ Tech Stack
 
-This project is built using the latest technologies for modern mobile app development:
-
-- **[Flutter](https://flutter.dev/):** The primary framework for building the app for both iOS and Android from a single codebase.
-- **[Dart](https://dart.dev/):** The programming language used.
-- **[Firebase](https://firebase.google.com/):** For backend services including:
-  - **Firebase Authentication** for user management.
-- **[Bloc / Cubit](https://bloclibrary.dev/):** For predictable and scalable state management.
+| Technology | Purpose |
+|------------|----------|
+| Flutter | Cross-platform framework |
+| Dart | Programming language |
+| Firebase Auth | Authentication |
+| MockAPI | Product data |
+| REST APIs | Data fetching |
+| Bloc / Cubit | State management |
 
 ---
 
-## 🚀 Getting Started
+## 📦 Installation
 
-To get a local copy up and running, follow these simple steps.
+bash
+git clone https://github.com/20Mahmoud06/Kutuku.git
 
-### Prerequisites
+cd Kutuku
 
-Make sure you have the Flutter SDK installed on your machine.
-- [Flutter Installation Guide](https://flutter.dev/docs/get-started/install)
+flutter pub get
 
-### Installation
+flutter run
 
-1. Clone the repo
-   ```sh
-   git clone [https://github.com/20Mahmoud06/Kutuku.git](https://github.com/20Mahmoud06/Kutuku.git)
+🔐 Security Notice
+
+Do NOT upload:
+
+Firebase API keys
+
+Any private configuration files
+
+Payment gateway secret keys
+
+Keep your credentials secure 🔒
+
+📱 Future Updates
+
+💳 Payment Gateway Integration
+
+❤️ Wishlist & Favorites
+
+📦 Order History
+
+🗄 Full Backend Integration
+
+📄 License
+
+MIT License
+
+<p align="center"> Built with passion by Mahmoud Safa 👟💜 </p>
